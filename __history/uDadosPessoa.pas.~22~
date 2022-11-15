@@ -1,0 +1,79 @@
+unit uDadosPessoa;
+
+interface
+
+uses
+  System.SysUtils;
+
+Type
+  RDados_Pessoa = record
+    Altura: Double;
+    Peso: Double;
+    Sexo: String;
+    IMC: String;
+  end;
+
+function CalcularIMC(p_Peso, p_Altura: Double; p_Sexo: String): String;
+
+var
+  P_Dados_Pessoa: RDados_Pessoa;
+
+implementation
+
+function CalcularIMC(p_Peso, p_Altura: Double; p_Sexo: String): String;
+
+var
+  l_IMC: Double;
+  l_StrIMC: String;
+
+begin
+  if p_Sexo = '' then
+    raise Exception.Create('Obrigatório informar o sexo!');
+
+  try
+
+    l_IMC := p_Peso / (p_Altura * p_Peso);
+    if p_Sexo = 'F' then
+    begin
+      if (l_IMC < 19.1) then
+        l_StrIMC := 'Abaixo do peso'
+      else if (l_IMC >= 19.1) and (l_IMC <= 25.8) then
+        l_StrIMC := 'Peso ideal'
+      else if (l_IMC > 25.8) and (l_IMC <= 27.3) then
+        l_StrIMC := 'Levemente acima do peso'
+      else if (l_IMC > 27.3) and (l_IMC <= 32.3) then
+        l_StrIMC := 'Acima do peso, cuidado!'
+      else if (l_IMC > 32.3) then
+        l_StrIMC := 'Obesidade, procure um profissional de saúde!';
+
+    end
+
+    else
+    begin
+      if p_Sexo = 'M' then
+      begin
+        if (l_IMC < 20.7) then
+          l_StrIMC := 'Abaixo do peso'
+        else if (l_IMC >= 20.7) and (l_IMC <= 26.4) then
+          l_StrIMC := 'Peso ideal'
+        else if (l_IMC >= 26.4) and (l_IMC <= 27.8) then
+          l_StrIMC := 'Levemente acima do peso'
+        else if (l_IMC > 27.8) and (l_IMC <= 31.1) then
+          l_StrIMC := 'Acima do peso, cuidado!'
+        else if (l_IMC > 31.1) then
+          l_StrIMC := 'Obesidade, procure um profissional de saúde!';
+
+      end;
+
+    end;
+    Result := l_StrIMC;
+
+  except
+
+    raise Exception.Create('Erro ao efetuar cálculo de IMC');
+
+  end;
+
+end;
+
+end.
